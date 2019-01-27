@@ -12,14 +12,14 @@ Have you ever wanted to organize a type's members into groups, just like namespa
 ## Note: Type and namespace syntax are probably gonna look different in the final release
 type Person
 {
-    Age int
-    
-    namespace Names
-    {
-        FirstName string
-        MiddleName string
-        LastName string
-    }
+	Age int
+	
+	namespace Names
+	{
+		FirstName string
+		MiddleName string
+		LastName string
+	}
 }
 
 ## Pretend the following code is inside a function
@@ -50,7 +50,7 @@ The function type above is denoted by `(string; string, string)`. The first `str
 ```
 concatenate (string; string, string) = (result string; first string, second string)
 {
-    result = first + second
+	result = first + second
 }
 ```
 
@@ -202,7 +202,7 @@ This piece of code gives a compiler error due to the same reason the code above 
 ```
 if (_, n = int.TryParse("b"))
 {
-    ## Here be code
+	## Here be code
 }
 
 n int = 5
@@ -235,11 +235,11 @@ It makes much more sense for `#if` to behave exactly like a regular `if`, but as
 ```
 #if (compile)
 {
-    code()
+	code()
 }
 #else
 {
-    othercode()
+	othercode()
 }
 ```
 
@@ -263,15 +263,15 @@ Equivalent to the following C# code:
 private int _Hour;
 public int Hour
 {
-  get => this._Hour;
-  
-  set
-  {
-    if (value >= 0 && value < 24)
-      throw new Exception();
-    else
-      this._Hour = value;
-  }
+	get => this._Hour;
+	
+	set
+	{
+		if (value >= 0 && value < 24)
+			this._Hour = value;
+		else
+			throw new Exception();
+	}
 }
 ```
 
