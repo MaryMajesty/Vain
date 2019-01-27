@@ -56,11 +56,11 @@ concatenate (string; string, string) = (result string; first string, second stri
 
 I hope you can see the problem now: The function's parameter types are declared twice. This is less than ideal, especially for functions with lots of parameters. While you could implicitly type the function value, this would result in the types and names being at opposite ends of the declaration.
 
-`concatenate (string; string, string) = (result; first, second) ## Pretend there's more code here.`
+`concatenate (string; string, string) = (result; first, second) { ## Pretend there's more code here.`
 
-This isn't exactly userfriendly. It makes much more sense to implicitly type the variable and have all the explicit typing in the function value.
+This isn't exactly user friendly. It makes much more sense to implicitly type the variable and have all the explicit typing in the function value.
 
-`concatenate = (result string; first string, second string) ## Pretend there's more code here.`
+`concatenate = (result string; first string, second string) { ## Pretend there's more code here.`
 
 This inherently leads to the name coming first, and the type second. If we wrote all the declarations with type-first name-second syntax, the result would look pretty messy.
 
@@ -69,7 +69,7 @@ int value = 5
 valuefunc = (int) { ## Pretend there's more code here.
 ```
 
-So, the only resulting option to keep everything coherent is to write the name first and the type second. It has other benefits too: When you look at a type's members, you see all the names on the left side, neatly aligned. And seeing all the names easily like that gives you more information about a type's purpose than only seeing its member types.
+So, the only resulting option to keep everything coherent is to always write the name first and the type second. It has other benefits too: When you look at a type's members, you see all the names on the left side, neatly aligned. And seeing all the names easily like that gives you more information about a type's purpose than only seeing its member types.
 
 </p></details>
 
