@@ -78,8 +78,8 @@ So, the only resulting option to keep everything coherent is to always write the
 You know how low level languages require arrays to be of a fixed size? And how high level languages don't allow any fixed size arrays? Why can't we just have both?
 
 ```
-fixedsizearray int[4] = new int[4]()
-dynamicsizearray int[] = new int[](4)
+fixedsizearray int[4] = int[4]()
+dynamicsizearray int[] = int[](4)
 ```
 
 `int[4]` and `int[]` are different types, just like `int[4]` and `int[3]` are different types. Fixed size arrays can be implicitly converted into dynamic size arrays, and dynamic size arrays can be explicitly converted into fixed size arrays.
