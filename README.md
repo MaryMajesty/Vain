@@ -1,5 +1,9 @@
 # Vain, the best programming language that has yet to be
 
+## Goals:
+
+Vain is a programmer-first language. It is designed to be as usable, user friendly, and pleasant to program in as possible. Its focus includes good debuggability and as much compile-time error checking as possible.
+
 ## Features:
 
 <details><summary>Typing</summary><p>
