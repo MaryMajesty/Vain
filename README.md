@@ -451,7 +451,7 @@ There is currently no consensus on how this syntax should look.
 
 <details><summary>FAQ</summary><p>
 
-# Am I allowed to make puns about "programming in vain"?
+## Am I allowed to make puns about "programming in vain"?
 Yes. In fact, you are expected to.
 
 </p></details
