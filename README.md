@@ -110,7 +110,33 @@ Why have null reference exceptions, when you can also just... Not have them?
 
 <details><summary>Variables</summary><p>
 
-<details><summary>Variable Expression</summary><p>
+<details><summary>Variable Expressions</summary><p>
+
+Variable expressions are special expressions that aren't *really* expressions. They're basically lists of variables with some special properties.
+
+```
+a, b, c = 1, 2, 3
+d, e, f = 5
+```
+
+You can assign a list of values to a variable expression. If the number of values matches the number of variables, each variable gets assigned the corresponding value. If there is only one value, all variables get assigned that same value.
+
+Functions in Vain can have multiple return values, which get returned as one variable expression. You can retrieve individual variables using the `:.` operator (syntax not final).
+
+```
+b, n = int.TryParse("5")
+
+parsedsuccessfully = int.TryParse("5"):.success
+```
+
+When you don't retrieve a specific variable from a variable expression, the entire expression implicitly gets converted to its first variable. This makes for some nice if-statements:
+
+```
+if (_, n = int.TryParse("5"))
+	docode(n)
+```
+
+`_` is a reserved variable name that essentially acts as a black hole. You can assign any value to it, but you can't retrieve any value from it. You can basically use it to get rid of any variables from a variable expression that you don't need.
 
 </p></details>
 
@@ -137,7 +163,137 @@ By reducing the `public` and `private` keywords to `+` and `-`, all of a type's 
 
 </p></details>
 
-<details><summary>Variable Signatures</summary><p>
+<details><summary>Variable Signatures / First Class Functions / Recursion Operator</summary><p>
+
+Because functions in Vain are first class citizens, Vain doesn't have function overloading in its traditional sense. Instead, Vain allows multiple variables to have the same name, as long as their types differ. This combination of name and type is called a variable's signature.
+
+```
+tostring = (result string; int input) { ## Pretend there's more code here.
+tostring = (result string; float input) { ## Pretend there's more code here.
+
+t = tostring(5)
+```
+
+The compiler automatically picks which variables make sense in a given context based on their type. In case of ambiguity, you can also manually specify a variable based on its signature.
+
+`t = [(string; int)]tostring(5)`
+
+Because functions are first-class citizens, there is an inherent need for a name-independent way of achieving recursion, as the variable that is referenced could contain a different function at runtime. Thus, the recursion operator `^` is used, which simply makes the function call itself.
+
+```
+factorial = (result int; input int)
+{
+	if (input == 0)
+		result = 1
+	else
+		result = input * ^(input - 1)
+}
+```
+
+</p></details>
+
+<details><summary>Type-Wide Variables</summary><p>
+
+Due to functions being first class citizens, function overriding can't be achieved in the regular way. To alleviate this, Vain has something called "type-wide variables". These are variables whose value is the same for each instance of a type. They're essentially constants, with one exception: Sub-types can change these, because they are different types.
+
+```
+## Type syntax not final
+type Vehicle
+{
+	HonkSound := "*generic vehicle noises*"
+	Honk := Speakers.Play(HonkSound)
+}
+
+type Car : Vehicle
+{
+	HonkSound := "*car noises*"
+}
+
+## Pretend the following code is inside a function
+
+a Vehicle = Vehicle()
+a.Honk() ## Plays "*generic vehicle noises*"
+
+b Car = Car()
+b.Honk() ## Plays "*car noises*"
+
+c Vehicle = Car()
+c.Honk() ## Plays "*car noises*"
+```
+
+It might seem counter-intuitive at first that a variable whose value is supposed to always be the same can differ if it was changed in a sub-type, but it easily allows for function overriding. Because a type's type-wide variables always have the same value, you can access the type-wide variables of a type's base type.
+
+```
+type Car : Vehicle
+{
+	HonkSound := base.HonkSound + " I don't know what to write here, in hindsight this is a bad code example"
+}
+```
+
+</p></details>
+
+<details><summary>Better Exceptions</summary><p>
+
+Are you tired of having to create new Exception types all the time, only to show a basic debug message? Vain comes to the rescue!
+
+```
+exception IndexOutOfRangeException("The index was outside the range of the collection.", Collection object, Index int, Range Span)
+
+## Pretend the following code is inside a function
+throw IndexOutOfRangeException(array, -1, Span(0, array.Length))
+
+## Shows the following debug information:
+## IndexOutOfRangeException: The index was outside the range of the collection.
+## Collection: array
+## Index: -1
+## Range: 0 to 5
+```
+
+This exception has what every exception needs: An error message, and additional debug information about how the error happened. No more having to scratch your head at which index was outside of what range of which object! The debug information includes the values of all the provided information, along with variable names of the values, if they came from a variable (in this example, the variable "array" gets included as parameter, and as such its name is displayed too).
+
+</p></details>
+
+<details><summary>Rich Generics</summary><p>
+
+Generics are great. But they could be better. Such as by allowing generic types to not only specify types as parameters, but primitives too. This would allow you to generically specify, for example, a texture's dimensions. Another addition is the possibility of having certain variables only be accessible if a generic type's parameters fulfill certain conditions.
+
+```
+type Texture<NDimensions int, TColor Color>
+{
+	Size int[[NDimensions]] ## I have no idea what generically specifying an array's dimensions is supposed to look like.
+	Pixels TColor[[NDimensions]]
+	
+	if (NDimensions == 1)
+		Length := this.Size[0]
+	else if (NDimensions == 2)
+		Resolution := new Vector(this.Size[0], this.Size[1])
+}
+```
+
+Something that ticked me off about C#'s generics in particular is that specific instances of generic types don't share a subtype.
+
+```
+t1 Texture = Texture<2, Rgba32>()
+t2 Texture = Texture<3, Rgb24>()
+```
+
+Both textures are Textures, so they should share the same base type, Texture. A generic type's base type simply pretends all its parameter types are of type object.
+
+Also, writing `Texture<2>` looks kind of ugly, so there's some syntactic sugar for that:
+
+```
+t = Texture2()
+## Is equivalent to:
+t = Texture<2>()
+```
+
+Assuming there isn't already a type named `Texture2`.
+
+</p></details>
+
+<details><summary>Polymorphism</summary><p>
+
+There seems to be some hate towards polymorphism in the programming community, yet those same people also happily use interfaces, which essentially do the same thing, just in a less straightforward way. And because Vain is supposed to be as consistent as possible, it simply allows polymorphism.
 
 </p></details>
 
@@ -147,7 +303,7 @@ By reducing the `public` and `private` keywords to `+` and `-`, all of a type's 
 
 
 
-<details><summary>Improving Syntax</summary><p>
+<details><summary>Improving Syntax Features</summary><p>
 
 Some Vain features aren't exactly new. But they are improved.
 
@@ -278,6 +434,14 @@ public int Hour
 	}
 }
 ```
+
+</p></details>
+
+<details><summary>Documentation Syntax</summary><p>
+
+Have you ever noticed how a language's supposed "documentation" syntax is just glorified comments? I sure have. And, as you can probably guess, I don't really like that. So, Vain is supposed to have actual documentation syntax. This makes the compiler able to show actual errors when the documentation is wrong, such as when it references variables that don't exist anymore. Vain's intermediate representation will also include this documentation information, so whenever you reference a library, you will always have its documentation on hand, without having to download a separate, separately created documentation file. Rest in peace, HTML documentations.
+
+There is currently no consensus on how this syntax should look.
 
 </p></details>
 
