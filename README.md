@@ -395,7 +395,7 @@ brightness = (color.R + color.G + color.B) / 3
 
 Vain has a really simple and intuitive solution for this.
 
-`brightness = (graphic.Bockground.Color.R + .G + .B) / 3`
+`brightness = (graphic.Background.Color.R + .G + .B) / 3`
 
 It's shorter than the alternatives, it's intuitive to understand, and it saves you from writing unneccessary code.
 
