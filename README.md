@@ -307,37 +307,7 @@ There seems to be some hate towards polymorphism in the programming community, y
 
 Some Vain features aren't exactly new. But they are improved.
 
-<details><summary>Short Lambdas</summary><p>
-
-Consider the following C# code:
-
-`vals = list.Select(item => item.Value);`
-
-Doesn't look too bad at first glance. But writing lambdas like this multiple times shows the problem: You have to write `item => item` several times, over and over. In addition, the `item =>` part isn't even necessarily needed. Thus, I propose what I am currently calling "short lambdas":
-
-`vals = list.Select($.Value)`
-
-These short lambdas take one parameter, `$`, which does not need to be declared, saving space and time. By removing the unneeded `item => item` part, the code looks a lot cleaner too, improving readability.
-
-Short lambdas are not usable everywhere, as they only take one parameter and their range has to be determined by the compiler, but in the cases where they can't be used, regular lambdas make far more sense than opting for this kind of syntactic sugar.
-
-</p></details>
-
-<details><summary>Consistent Cast Syntax</summary><p>
-
-Look at this C# code:
-
-`((double)(5 + 4)).ToString()`
-
-You're converting an integer to a double to a string. So why on Earth is the code written in the order "double, int, string"? That just doesn't make any sense. And all the parentheses, ugh.
-
-Here's how Vain does it:
-
-`(5 + 4){float}{string}`
-
-It's simple. It's short. It's readable. And, most importantly, it's in the right order. Integer, float, string. It could have been so simple, C#...
-
-</p></details>
+<details><summary>Making Familiar Features Less Bad</summary><p>
 
 <details><summary>Making Code Blocks Make More Sense</summary><p>
 
@@ -369,6 +339,69 @@ n int = 5
 ```
 
 `n` is defined inside the if-statement, so it only exists inside its code block. Outside of it, it doesn't exist, so a new `n` can be declared. A simple fix, and all variables can live happily ever after and don't have to fear existential crises anymore.
+
+</p></details>
+
+---
+
+</p></details>
+
+<details><summary>Syntactic Sugar</summary><p>
+
+<details><summary>Short Lambdas</summary><p>
+
+Consider the following C# code:
+
+`vals = list.Select(item => item.Value);`
+
+Doesn't look too bad at first glance. But writing lambdas like this multiple times shows the problem: You have to write `item => item` several times, over and over. In addition, the `item =>` part isn't even necessarily needed. Thus, I propose what I am currently calling "short lambdas":
+
+`vals = list.Select($.Value)`
+
+These short lambdas take one parameter, `$`, which does not need to be declared, saving space and time. By removing the unneeded `item => item` part, the code looks a lot cleaner too, improving readability.
+
+Short lambdas are not usable everywhere, as they only take one parameter and their range has to be determined by the compiler, but in the cases where they can't be used, regular lambdas make far more sense than opting for this kind of syntactic sugar.
+
+</p></details>
+
+<details><summary>Parallel Member Usage</summary><p>
+
+Have you ever written code like this?
+
+`brightness = (graphic.Background.Color.R + graphic.Background.Color.G + graphic.Background.Color.B) / 3`
+
+Have you ever felt yourself considering shortening such a line by saving the repeated code as a temporary variable, only to find that it's still ugly, and now even takes up an additional line?
+
+```
+color = graphic.Background.Color
+brightness = (color.R + color.G + color.B) / 3
+```
+
+Vain has a really simple and intuitive solution for this.
+
+`brightness = (graphic.Bockground.Color.R + .G + .B) / 3`
+
+It's shorter than the alternatives, it's intuitive to understand, and it saves you from writing unneccessary code.
+
+</p></details>
+
+---
+
+</p></details>
+
+<details><summary>Consistent Cast Syntax</summary><p>
+
+Look at this C# code:
+
+`((double)(5 + 4)).ToString()`
+
+You're converting an integer to a double to a string. So why on Earth is the code written in the order "double, int, string"? That just doesn't make any sense. And all the parentheses, ugh.
+
+Here's how Vain does it:
+
+`(5 + 4){float}{string}`
+
+It's simple. It's short. It's readable. And, most importantly, it's in the right order. Integer, float, string. It could have been so simple, C#...
 
 </p></details>
 
