@@ -342,6 +342,22 @@ n int = 5
 
 </p></details>
 
+<details><summary>Consistent Cast Syntax</summary><p>
+
+Look at this C# code:
+
+`((double)(5 + 4)).ToString()`
+
+You're converting an integer to a double to a string. So why on Earth is the code written in the order "double, int, string"? That just doesn't make any sense. And all the parentheses, ugh.
+
+Here's how Vain does it:
+
+`(5 + 4){float}{string}`
+
+It's simple. It's short. It's readable. And, most importantly, it's in the right order. Integer, float, string. It could have been so simple, C#...
+
+</p></details>
+
 ---
 
 </p></details>
@@ -386,22 +402,6 @@ It's shorter than the alternatives, it's intuitive to understand, and it saves y
 </p></details>
 
 ---
-
-</p></details>
-
-<details><summary>Consistent Cast Syntax</summary><p>
-
-Look at this C# code:
-
-`((double)(5 + 4)).ToString()`
-
-You're converting an integer to a double to a string. So why on Earth is the code written in the order "double, int, string"? That just doesn't make any sense. And all the parentheses, ugh.
-
-Here's how Vain does it:
-
-`(5 + 4){float}{string}`
-
-It's simple. It's short. It's readable. And, most importantly, it's in the right order. Integer, float, string. It could have been so simple, C#...
 
 </p></details>
 
