@@ -417,7 +417,7 @@ It's shorter than the alternatives, it's intuitive to understand, and it saves y
 
 `#(` and `#)` are the operators for marking the start and end of comments. They are nestable.
 
-`#( #( This is a comment. #) This is also a comment. #) This is not a comment anymore.`
+`#( #( This is a comment. #) This is also a comment. #) This is not a comment anymore. ## But this is one again.`
 
 </p></details>
 
