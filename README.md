@@ -102,6 +102,71 @@ Why have null reference exceptions, when you can also just... Not have them?
 
 </p></details>
 
+<details><summary>Polymorphism</summary><p>
+
+There seems to be some hate towards polymorphism in the programming community, yet those same people also happily use interfaces, which essentially do the same thing, just in a less straightforward way. And because Vain is supposed to be as consistent as possible, it simply allows polymorphism.
+
+</p></details>
+
+<details><summary>Better Exceptions</summary><p>
+
+Are you tired of having to create new Exception types all the time, only to show a basic debug message? Vain comes to the rescue!
+
+```
+exception IndexOutOfRangeException("The index was outside the range of the collection.", Collection object, Index int, Range Span)
+
+## Pretend the following code is inside a function
+throw IndexOutOfRangeException(array, -1, Span(0, array.Length))
+
+## Shows the following debug information:
+## IndexOutOfRangeException: The index was outside the range of the collection.
+## Collection: array
+## Index: -1
+## Range: 0 to 5
+```
+
+This exception has what every exception needs: An error message, and additional debug information about how the error happened. No more having to scratch your head at which index was outside of what range of which object! The debug information includes the values of all the provided information, along with variable names of the values, if they came from a variable (in this example, the variable "array" gets included as parameter, and as such its name is displayed too).
+
+</p></details>
+
+<details><summary>Rich Generics</summary><p>
+
+Generics are great. But they could be better. Such as by allowing generic types to not only specify types as parameters, but primitives too. This would allow you to generically specify, for example, a texture's dimensions. Another addition is the possibility of having certain variables only be accessible if a generic type's parameters fulfill certain conditions.
+
+```
+type Texture<NDimensions int, TColor Color>
+{
+	Size int[[NDimensions]] ## I have no idea what generically specifying an array's dimensions is supposed to look like.
+	Pixels TColor[[NDimensions]]
+	
+	if (NDimensions == 1)
+		Length := this.Size[0]
+	else if (NDimensions == 2)
+		Resolution := new Vector(this.Size[0], this.Size[1])
+}
+```
+
+Something that ticked me off about C#'s generics in particular is that specific instances of generic types don't share a subtype.
+
+```
+t1 Texture = Texture<2, Rgba32>()
+t2 Texture = Texture<3, Rgb24>()
+```
+
+Both textures are Textures, so they should share the same base type, Texture. A generic type's base type simply pretends all its parameter types are of type object.
+
+Also, writing `Texture<2>` looks kind of ugly, so there's some syntactic sugar for that:
+
+```
+t = Texture2()
+## Is equivalent to:
+t = Texture<2>()
+```
+
+Assuming there isn't already a type named `Texture2`.
+
+</p></details>
+
 ---
 
 </p></details>
@@ -229,71 +294,6 @@ type Car : Vehicle
 	HonkSound := base.HonkSound + " I don't know what to write here, in hindsight this is a bad code example"
 }
 ```
-
-</p></details>
-
-<details><summary>Better Exceptions</summary><p>
-
-Are you tired of having to create new Exception types all the time, only to show a basic debug message? Vain comes to the rescue!
-
-```
-exception IndexOutOfRangeException("The index was outside the range of the collection.", Collection object, Index int, Range Span)
-
-## Pretend the following code is inside a function
-throw IndexOutOfRangeException(array, -1, Span(0, array.Length))
-
-## Shows the following debug information:
-## IndexOutOfRangeException: The index was outside the range of the collection.
-## Collection: array
-## Index: -1
-## Range: 0 to 5
-```
-
-This exception has what every exception needs: An error message, and additional debug information about how the error happened. No more having to scratch your head at which index was outside of what range of which object! The debug information includes the values of all the provided information, along with variable names of the values, if they came from a variable (in this example, the variable "array" gets included as parameter, and as such its name is displayed too).
-
-</p></details>
-
-<details><summary>Rich Generics</summary><p>
-
-Generics are great. But they could be better. Such as by allowing generic types to not only specify types as parameters, but primitives too. This would allow you to generically specify, for example, a texture's dimensions. Another addition is the possibility of having certain variables only be accessible if a generic type's parameters fulfill certain conditions.
-
-```
-type Texture<NDimensions int, TColor Color>
-{
-	Size int[[NDimensions]] ## I have no idea what generically specifying an array's dimensions is supposed to look like.
-	Pixels TColor[[NDimensions]]
-	
-	if (NDimensions == 1)
-		Length := this.Size[0]
-	else if (NDimensions == 2)
-		Resolution := new Vector(this.Size[0], this.Size[1])
-}
-```
-
-Something that ticked me off about C#'s generics in particular is that specific instances of generic types don't share a subtype.
-
-```
-t1 Texture = Texture<2, Rgba32>()
-t2 Texture = Texture<3, Rgb24>()
-```
-
-Both textures are Textures, so they should share the same base type, Texture. A generic type's base type simply pretends all its parameter types are of type object.
-
-Also, writing `Texture<2>` looks kind of ugly, so there's some syntactic sugar for that:
-
-```
-t = Texture2()
-## Is equivalent to:
-t = Texture<2>()
-```
-
-Assuming there isn't already a type named `Texture2`.
-
-</p></details>
-
-<details><summary>Polymorphism</summary><p>
-
-There seems to be some hate towards polymorphism in the programming community, yet those same people also happily use interfaces, which essentially do the same thing, just in a less straightforward way. And because Vain is supposed to be as consistent as possible, it simply allows polymorphism.
 
 </p></details>
 
